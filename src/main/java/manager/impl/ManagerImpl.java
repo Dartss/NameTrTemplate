@@ -31,6 +31,8 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    private final String SQL_QUEUERY = "INSERT INTO names_translation(eng_word, ara_word) VALUES";
+
     public ManagerImpl() throws RemoteException
     {
 	init();
@@ -111,7 +113,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    // push job to mysql
 	    try
 	    {
-		jdbcHandler.insert("eee");
+		jdbcHandler.insert(SQL_QUEUERY + "(" + jobVO.getOriginWord()+ ","+ jobVO.getTranslatedWord() +");");
 	    } catch (SQLException e)
 	    {
 		e.printStackTrace();
@@ -133,7 +135,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
      */
     @Override public Adaptor pickAvailableAdaptor() throws RemoteException
     {
-	Adaptor adaptor = (Adaptor) this.adaptorsController.pickAvailableAdaptor();
+	Adaptor adaptor = this.adaptorsController.pickAvailableAdaptor();
 	return adaptor;
     }
 

@@ -35,11 +35,10 @@ public class NamesTrProperties extends DefaultProperties
     private static final String queuePort = "redis.port";
     private static final String inputQueueName = "input.queue.name";
 
-    private static final String jdbcUrl = "output.queue.name";
-    private static final String jdbcPort = "output.queue.name";
-    private static final String jdbcDriver = "output.queue.name";
-    private static final String jdbcUser = "output.queue.name";
-    private static final String jdbcPassword = "output.queue.name";
+    private static final String jdbcUrl = "jdbc.url";
+    private static final String jdbcDriver = "jdbc.driver";
+    private static final String jdbcUser = "jdbc.user";
+    private static final String jdbcPassword = "jdbc.password";
 
     private static final String managerHost = "manager.host";
     private static final String managerPort = "manager.port";
@@ -126,8 +125,6 @@ public class NamesTrProperties extends DefaultProperties
     }
 
     public static String getJdbcUrl() {return getInstance().getString(PROPERTIES_FILE, jdbcUrl); }
-
-    public static String getJdbcPort() {return getInstance().getString(PROPERTIES_FILE, jdbcPort); }
 
     public static String getJdbcUser() {return getInstance().getString(PROPERTIES_FILE, jdbcUser); }
 

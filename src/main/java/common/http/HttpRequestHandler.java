@@ -43,28 +43,28 @@ public class HttpRequestHandler{
 		});
 	}
 
-	public HttpResponse executeGet(String url, Map<String, String> headerParameters, Map<String, String> urlParameters, Map<String, String> authParameters) throws Exception {
-		return httpRequestHelper.get(url, headerParameters, urlParameters, authParameters);
+	public HttpResponse executeGet(String url, Map<String, String> headerParameters, Map<String, String> urlParameters) throws Exception {
+		return httpRequestHelper.get(url, headerParameters, urlParameters);
 	}
 
 	public HttpResponse executeGet(String url) throws Exception {
-		return httpRequestHelper.get(url, null, null, null);
+		return httpRequestHelper.get(url, null, null);
 	}
 
-	public HttpResponse executePost(String url, Map<String, String> headerParameters, Map<String, String> urlParameters, Map<String, String> authParameters) throws Exception {
-		return httpRequestHelper.post(url, headerParameters, urlParameters, authParameters);
+	public HttpResponse executePost(String url, Map<String, String> headerParameters, Map<String, String> urlParameters) throws Exception {
+		return httpRequestHelper.post(url, headerParameters, urlParameters);
 	}
 
 	public HttpResponse executePost(String url) throws Exception{
-		return httpRequestHelper.post(url, null, null, null);
+		return httpRequestHelper.post(url, null, null);
 	}
 
-	public HttpResponse getInputStream(String url, Map<String, String> headerParameters, Map<String, String> urlParameters, Map<String, String> authParameters) throws Exception {
-		return httpRequestHelper.getInputStream(url, headerParameters, urlParameters, authParameters);
+	public HttpResponse getInputStream(String url, Map<String, String> headerParameters, Map<String, String> urlParameters) throws Exception {
+		return httpRequestHelper.getInputStream(url, headerParameters, urlParameters);
 	}
 
 	public HttpResponse getInputStream(String url) throws Exception {
-		return httpRequestHelper.getInputStream(url, null, null, null);
+		return httpRequestHelper.getInputStream(url, null, null);
 	}
 
 	public static synchronized void shutdown() throws IOException {

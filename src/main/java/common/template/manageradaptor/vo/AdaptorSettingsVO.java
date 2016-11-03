@@ -1,9 +1,10 @@
 package common.template.manageradaptor.vo;
 
 
+import adaptor.Adaptor;
+
 import java.io.Serializable;
 
-import jsmarty.core.common.template.manageradaptor.Adaptor;
 
 public class AdaptorSettingsVO implements Serializable{
 

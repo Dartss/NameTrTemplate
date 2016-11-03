@@ -23,12 +23,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-import oauth.signpost.exception.OAuthNotAuthorizedException;
-
 /**
  * Http client helper
  * based on Apache Http client
@@ -91,8 +85,7 @@ public class HttpRequestHelper
 	 * @return
 	 * @throws Exception
 	 */
-	public HttpResponse get(String url, Map<String, String> headerParameters, Map<String, String> urlParameters,
-			Map<String, String> authParameters) throws Exception
+	public HttpResponse get(String url, Map<String, String> headerParameters, Map<String, String> urlParameters) throws Exception
 	{
 		HttpGet httpGet = null;
 
@@ -117,11 +110,6 @@ public class HttpRequestHelper
 			addHeader(httpGet, headerParameters);
 		}
 
-		if (authParameters != null && !authParameters.isEmpty())
-		{
-			signOAuth(authParameters, httpGet);
-		}
-
 		return execute(httpGet);
 	}
 
@@ -133,8 +121,7 @@ public class HttpRequestHelper
 	 * @return
 	 * @throws Exception
 	 */
-	public HttpResponse post(String url, Map<String, String> headerParameters, Map<String, String> urlParameters,
-			Map<String, String> authParameters) throws Exception
+	public HttpResponse post(String url, Map<String, String> headerParameters, Map<String, String> urlParameters) throws Exception
 	{
 
 		HttpPost httpPost = new HttpPost(url);
@@ -149,11 +136,6 @@ public class HttpRequestHelper
 		{
 			List<NameValuePair> nameValuePairs = toNameValuePairList(urlParameters);
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-		}
-
-		if (authParameters != null && !authParameters.isEmpty())
-		{
-			signOAuth(authParameters, httpPost);
 		}
 
 		return execute(httpPost);
@@ -179,7 +161,7 @@ public class HttpRequestHelper
 	}
 
 	public HttpResponse getInputStream(String url, Map<String, String> headerParameters,
-			Map<String, String> urlParameters, Map<String, String> authParameters) throws Exception
+			Map<String, String> urlParameters) throws Exception
 	{
 		HttpGet httpGet = null;
 
@@ -202,11 +184,6 @@ public class HttpRequestHelper
 		if (headerParameters != null && !headerParameters.isEmpty())
 		{
 			addHeader(httpGet, headerParameters);
-		}
-
-		if (authParameters != null && !authParameters.isEmpty())
-		{
-			signOAuth(authParameters, httpGet);
 		}
 
 		return getInputStream(httpGet);
@@ -269,29 +246,6 @@ public class HttpRequestHelper
 			request.addHeader(key, value);
 			request.getAllHeaders();
 		}
-	}
-
-	private void signOAuth(Map<String, String> parameters, HttpRequestBase request) throws OAuthMessageSignerException,
-	OAuthExpectationFailedException, OAuthCommunicationException, OAuthNotAuthorizedException, IOException
-	{
-		String consumerKey = parameters.get(HttpConstants.OAUTH_CONSUMER_KEY);
-		String consumerSecret = parameters.get(HttpConstants.OAUTH_CONSUMER_SECRET);
-		String accesToken = parameters.get(HttpConstants.OAUTH_ACCESS_TOKEN);
-		String tokenSecret = parameters.get(HttpConstants.OAUTH_TOKEN_SECRET);
-
-		if (consumerKey != null & consumerSecret != null)
-		{
-			signOAuth(consumerKey, consumerSecret, accesToken, tokenSecret, request);
-		}
-	}
-
-	private void signOAuth(String consumerKey, String consumerSecret, String accesToken, String tokenSecret,
-			HttpRequestBase request) throws OAuthMessageSignerException, OAuthExpectationFailedException,
-	OAuthCommunicationException, OAuthNotAuthorizedException, IOException
-	{
-		CommonsHttpOAuthConsumer consumer = new CommonsHttpOAuthConsumer(consumerKey, consumerSecret);
-		consumer.setTokenWithSecret(accesToken, tokenSecret);
-		consumer.sign(request);
 	}
 
 	private String parseResponseResult(CloseableHttpResponse httpResponse) throws IOException

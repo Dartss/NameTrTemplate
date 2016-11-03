@@ -13,103 +13,109 @@ import java.util.logging.Logger;
 
 /**
  * Controller to handle the communication between manager and queue
- * 
- * @author rud
  *
+ * @author rud
  */
-public class QueueControllerImpl implements Runnable {
+public class QueueControllerImpl implements Runnable
+{
 
-	private Manager manager;
+    private Manager manager;
 
-	private QueuerPoolHandler queuerPoolHandler;
-	private String queueHost;
-	private int queuePort;
-	private String inputQueueName; 
-	private String outputQueueName;
-    	private JsonHandler jsonHandler;
+    private QueuerPoolHandler queuerPoolHandler;
+    private String queueHost;
+    private int queuePort;
+    private String inputQueueName;
+    private JsonHandler jsonHandler;
 
-	private static final long SLEEP_TIME_MILLIS = 3000;
-	private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final long SLEEP_TIME_MILLIS = 3000;
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	public QueueControllerImpl(Manager manager){
-		loadProperties();
-		this.manager = manager;
-		this.queuerPoolHandler = new QueuerPoolHandlerImpl(queueHost, queuePort);
-	    	this.jsonHandler = new JsonHandlerImpl();
-	}
+    public QueueControllerImpl(Manager manager)
+    {
+	loadProperties();
+	this.manager = manager;
+	this.queuerPoolHandler = new QueuerPoolHandlerImpl(queueHost, queuePort);
+	this.jsonHandler = new JsonHandlerImpl();
+    }
 
-	private void loadProperties() {
-		new NamesTrProperties();
+    private void loadProperties()
+    {
+	new NamesTrProperties();
 
-		this.queueHost = NamesTrProperties.getRedisHost();
-		this.queuePort = NamesTrProperties.getRedisPort();
-		this.inputQueueName = NamesTrProperties.getInputQueueName();
-		this.outputQueueName = NamesTrProperties.getOutputQueueName();
-	}
+	this.queueHost = NamesTrProperties.getRedisHost();
+	this.queuePort = NamesTrProperties.getRedisPort();
+	this.inputQueueName = NamesTrProperties.getInputQueueName();
+    }
 
-	@Override
-	public void run() {
-		while (true) {
-			// pull job
-			JobVO jobVO = pullJob(SLEEP_TIME_MILLIS);
-			//			logger.info("Controller sending job to adaptor " + jsonHandler.serialize(jobVO));
-			// send job to manager
-			boolean jobAccepted = false;
-			try {
-				jobAccepted = this.manager.executeJob(jobVO);
-			} catch (RemoteException e) {
-				// this exception can't be thrown 
-			}
+    @Override public void run()
+    {
+	while (true)
+	{
+	    // pull job
+	    JobVO jobVO = pullJob(SLEEP_TIME_MILLIS);
+	    //			logger.info("Controller sending job to adaptor " + jsonHandler.serialize(jobVO));
+	    // send job to manager
+	    boolean jobAccepted = false;
+	    try
+	    {
+		jobAccepted = this.manager.executeJob(jobVO);
+	    } catch (RemoteException e)
+	    {
+		// this exception can't be thrown
+	    }
 
-			//			this.logger.info("Job accepted - " + jobAccepted);
-			if (!jobAccepted) {
-				requeueJob(jobVO);
-				// set in wait mode
-				synchronized (this) {
-					try {
-						this.wait();
-					} catch (InterruptedException e) {
-						this.logger.severe(e.getMessage());
-					}
-				}				
-			}
+	    //			this.logger.info("Job accepted - " + jobAccepted);
+	    if (!jobAccepted)
+	    {
+		requeueJob(jobVO);
+		// set in wait mode
+		synchronized (this)
+		{
+		    try
+		    {
+			this.wait();
+		    } catch (InterruptedException e)
+		    {
+			this.logger.severe(e.getMessage());
+		    }
 		}
+	    }
 	}
+    }
 
-	public void requeueJob(JobVO jobVO) {
-		this.queuerPoolHandler.lpush(this.inputQueueName, this.jsonHandler.serialize(jobVO));
-	}
+    public void requeueJob(JobVO jobVO)
+    {
+	this.queuerPoolHandler.lpush(this.inputQueueName, this.jsonHandler.serialize(jobVO));
+    }
 
-	public void pushOut(JobVO jobVO) {
-		//		this.logger.info("Pushing out sdo: " + this.jsonHandler.serialize(sdo));
-		this.queuerPoolHandler.lpush(this.outputQueueName, this.jsonHandler.serialize(jobVO));
-		//		this.logger.info("Sdo pushed out " + this.jsonHandler.serialize(sdo));
-	}
+    /**
+     * pulls item from redis queue
+     *
+     * @param sleepTimeMillis thread will sleep for this time if lpop return null
+     * @return
+     */
+    private JobVO pullJob(long sleepTimeMillis)
+    {
+	String jobStr = null;
 
-	/**
-	 * pulls item from redis queue 
-	 * @param sleepTimeMillis thread will sleep for this time if lpop return null
-	 * @return
-	 */
-	private JobVO pullJob(long sleepTimeMillis) {
-		String jobStr = null;
+	while (jobStr == null)
+	{
+	    jobStr = this.queuerPoolHandler.lpop(this.inputQueueName);
 
-		while (jobStr == null) {
-			jobStr = this.queuerPoolHandler.lpop(this.inputQueueName);
-
-			// if we pulled null, then sleep for some time
-			if(jobStr == null){
-				try {
-					Thread.sleep(sleepTimeMillis);
-				} catch (InterruptedException e) {
-					this.logger.severe(e.getMessage());
-				}
-			}
+	    // if we pulled null, then sleep for some time
+	    if (jobStr == null)
+	    {
+		try
+		{
+		    Thread.sleep(sleepTimeMillis);
+		} catch (InterruptedException e)
+		{
+		    this.logger.severe(e.getMessage());
 		}
-
-		JobVO job = (JobVO) jsonHandler.deserialize(jobStr, new JobVO());
-
-		return job;
+	    }
 	}
+
+	return (JobVO) jsonHandler.deserialize(jobStr, new JobVO());
+    }
 
 }
