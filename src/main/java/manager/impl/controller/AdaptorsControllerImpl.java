@@ -49,13 +49,13 @@ public class AdaptorsControllerImpl implements AdaptorsController
 
     public void loadProperties()
     {
-	new NamesTrProperties();
+//	new NamesTrProperties();
 
 		/*
-		 * 
+		 *
 		 * Fill local variables with needed properties ...
-		 * 
-		 * 
+		 *
+		 *
 		 */
     }
 
