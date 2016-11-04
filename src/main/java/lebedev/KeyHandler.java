@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.logging.Logger;
 
 import common.properties.template.NamesTrProperties;
 
@@ -13,6 +15,9 @@ public class KeyHandler
     private static final int MILLISECONDS_IN_25_HOURS = 90000000;
     private int yandexDailyLimit;
     private int yandexMonthlyLimit;
+
+    private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 
     private List<YandexKeyVO> keyList;
 
@@ -72,6 +77,7 @@ public class KeyHandler
 
     public void blockKey(YandexKeyVO yandexKeyVo)
     {
+	LOGGER.info("Blocking key : " + yandexKeyVo.getKey());
 	yandexKeyVo.setDailyUsages(yandexDailyLimit);
     }
 

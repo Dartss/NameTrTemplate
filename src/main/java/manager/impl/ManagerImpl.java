@@ -142,6 +142,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    }
 	} else
 	{
+	    LOGGER.info("Job is not successful with code : " + jobVO.getStatusCode());
 	    if (jobVO.getStatusCode() == 403 || jobVO.getStatusCode() == 404) {
 		this.keyHandler.blockKey(jobVO.getYandexKeyVO());
 	    }
