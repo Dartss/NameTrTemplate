@@ -251,7 +251,6 @@ public class JedisHelper {
 	 * Time complexity: O(1)
 	 * 
 	 * @param key
-	 * @param strings
 	 * @return Integer reply, specifically, the number of elements inside the
 	 *         list after the push operation.
 	 */
@@ -286,7 +285,6 @@ public class JedisHelper {
 	 * Time complexity: O(1)
 	 * 
 	 * @param key
-	 * @param strings
 	 * @return Integer reply, specifically, the number of elements inside the
 	 *         list after the push operation.
 	 */
@@ -746,4 +744,26 @@ public class JedisHelper {
 		this.trials=0;
 	}
 
+    public String spop(String key)
+    {
+	try{
+	    Jedis jedis = this.getResource(this);
+	    String response = jedis.spop(key);
+	    closeJedis(jedis);
+	    return response;
+	}catch(JedisConnectionException | JedisDataException | ClassCastException ex){
+	    if(trials == 10){
+		ex.printStackTrace();
+		LOGGER.info("active: "+jedisPool.getNumActive() + " - idle:" +jedisPool.getNumIdle() + " -waiters: " + jedisPool.getNumWaiters());
+		LOGGER.info("momentaryDebugCounter :" +momentaryDebugCounter);
+		LOGGER.info("time of exception: " + System.currentTimeMillis());
+		return null;
+	    }else{
+		trials++;
+		LOGGER.info(ex.getMessage());
+		closeJedis(jedis);
+		return spop(key);
+	    }
+	}
+    }
 }

@@ -49,7 +49,7 @@ public interface QueuerPoolHandler {
      * @return
      */
     public Pipeline getJedisPipeline();
-
+	String spop(final String key);
 	String set(final String key, final String value);
 	String get(final String key);
 	Long lpush(final String key, final String value);

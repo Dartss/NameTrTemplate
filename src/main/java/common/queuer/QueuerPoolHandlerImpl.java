@@ -126,6 +126,11 @@ public class QueuerPoolHandlerImpl implements QueuerPoolHandler{
 	 * prints pools info. Uses for debugging only
 	 */
 	@Override
+	public String spop(String key) {
+	    return this.jedisHelper.spop(key);
+	}
+
+	@Override
 	public void printInfo(boolean withDetails) {
 		this.jedisHelper.printInfo();
 	}
