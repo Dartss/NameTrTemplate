@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class HttpClientProperties extends DefaultProperties
 {
 
-	private final static String PROPERTIES_FILE = "JSmarty.properties";
+	private final static String PROPERTIES_FILE = "nameTranslator.properties";
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static final HttpClientProperties instance = new HttpClientProperties();
