@@ -33,9 +33,8 @@ public class WorkerImpl implements Runnable
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public WorkerImpl(AdaptorImpl adaptor, JobVO jobVO)
-    {
-        this.client = new OkHttpClient();
+    public WorkerImpl(AdaptorImpl adaptor, JobVO jobVO) {
+	this.client = new OkHttpClient();
 	this.jsonParser = new JsonParser();
 	this.adaptor = adaptor;
 	this.jobVO = jobVO;
@@ -44,7 +43,8 @@ public class WorkerImpl implements Runnable
 	this.yandexKeyVO = jobVO.getYandexKeyVO();
     }
 
-    @Override public void run()
+    @Override
+    public void run()
     {
 	String toTranslate = jobVO.getOriginWord();
 	String translated;
@@ -62,15 +62,17 @@ public class WorkerImpl implements Runnable
 	    Response response = client.newCall(request).execute();
 
 	    JsonObject sourceObject = jsonParser.parse(response.body().string()).getAsJsonObject();
-	    translated = sourceObject.getAsJsonArray("text").get(0).getAsString();
-
 	    statusCode = response.code();
-	    if (statusCode == 200) {
-	    	LOGGER.info("Word " + toTranslate + " translated to " + translated);
-	    	this.jobVO.setTranslatedWord(translated);
-	    	this.jobVO.setSuccess(Boolean.TRUE);
-	    } else {
-	        this.jobVO.setSuccess(Boolean.FALSE);
+
+	    if (statusCode == 200)
+	    {
+		translated = sourceObject.getAsJsonArray("text").get(0).getAsString();
+		LOGGER.info("Word " + toTranslate + " translated to " + translated);
+		this.jobVO.setTranslatedWord(translated);
+		this.jobVO.setSuccess(Boolean.TRUE);
+	    } else
+	    {
+		this.jobVO.setSuccess(Boolean.FALSE);
 	    }
 	} catch (Exception e)
 	{
@@ -80,4 +82,4 @@ public class WorkerImpl implements Runnable
 	this.jobVO.setStatusCode(statusCode);
 	this.adaptor.returnJob(jobVO);
     }
-}	
+}
