@@ -60,9 +60,10 @@ public class WorkerImpl implements Runnable
 	    RequestBody body = RequestBody.create(REQUEST_MEDIA_TYPE_JSON, translateRequest);
 	    Request request = new Request.Builder().url(yandexUrl + yandexKeyVO.getKey()).post(body).build();
 	    Response response = client.newCall(request).execute();
-
+	    
 	    JsonObject sourceObject = jsonParser.parse(response.body().string()).getAsJsonObject();
 	    statusCode = response.code();
+	    LOGGER.info("Status code is:" + statusCode);
 
 	    if (statusCode == 200)
 	    {
