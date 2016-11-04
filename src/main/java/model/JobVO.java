@@ -1,8 +1,6 @@
-package common.template.manageradaptor.vo;
+package model;
 
 import java.io.Serializable;
-
-import lebedev.YandexKeyVO;
 
 public class JobVO implements Serializable
 {

@@ -1,13 +1,13 @@
-package lebedev;
+package manager.impl.controller;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.logging.Logger;
 
+import model.YandexKeyVO;
 import common.properties.template.NamesTrProperties;
 
 public class KeyHandler

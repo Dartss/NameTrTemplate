@@ -4,10 +4,10 @@ import adaptor.Adaptor;
 import common.jdbc.JdbcHandler;
 import common.properties.template.NamesTrProperties;
 import common.rmi.RmiUtils;
-import common.template.manageradaptor.vo.JobVO;
+import model.JobVO;
 import common.utils.Constants;
-import lebedev.KeyHandler;
-import lebedev.YandexKeyVO;
+import manager.impl.controller.KeyHandler;
+import model.YandexKeyVO;
 import manager.Manager;
 import manager.impl.controller.AdaptorsController;
 import manager.impl.controller.AdaptorsControllerImpl;
@@ -135,7 +135,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    try
 	    {
 	        LOGGER.info("Manager onJobExecuted origin " + jobVO.getOriginWord() + " translated " + jobVO.getTranslatedWord());
-		jdbcHandler.updateQuery("UPDATE names_translation SET ara_word=\"" + jobVO.getTranslatedWord() + "\" WHERE eng_word=\"" + jobVO.getOriginWord() + "\";");
+		jdbcHandler.updateQuery("UPDATE names_translation SET ara_word='" + jobVO.getTranslatedWord() + "' WHERE eng_word=\"" + jobVO.getOriginWord() + "\";");
 	    } catch (SQLException e)
 	    {
 		e.printStackTrace();

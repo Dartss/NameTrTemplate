@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import common.properties.core.DefaultProperties;
-import common.template.manageradaptor.vo.AdaptorSettingsVO;
+import model.AdaptorSettingsVO;
 import common.utils.Constants.CALL_TYPE;
 
 /**

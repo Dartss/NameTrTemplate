@@ -1,4 +1,4 @@
-package common.template.manageradaptor.vo;
+package model;
 
 
 import adaptor.Adaptor;

@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import common.properties.core.DefaultProperties;
-import common.template.manageradaptor.vo.AdaptorSettingsVO;
+import model.AdaptorSettingsVO;
 import common.utils.Constants;
-import lebedev.YandexKeyVO;
+import model.YandexKeyVO;
 
 /**
  * @author vit

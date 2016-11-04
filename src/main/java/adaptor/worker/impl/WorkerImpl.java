@@ -4,8 +4,8 @@ import adaptor.impl.AdaptorImpl;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.squareup.okhttp.*;
-import common.template.manageradaptor.vo.JobVO;
-import lebedev.YandexKeyVO;
+import model.JobVO;
+import model.YandexKeyVO;
 
 import java.util.HashMap;
 import java.util.Map;

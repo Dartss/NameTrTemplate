@@ -1,7 +1,7 @@
 package manager.impl.controller;
 
 import adaptor.Adaptor;
-import common.template.manageradaptor.vo.JobVO;
+import model.JobVO;
 
 /**
  * Controller to handle the communication between manager and adaptor (worker)

@@ -1,7 +1,7 @@
 package manager;
 
 import adaptor.Adaptor;
-import common.template.manageradaptor.vo.JobVO;
+import model.JobVO;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

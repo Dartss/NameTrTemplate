@@ -1,7 +1,7 @@
 package adaptor;
 
-import common.template.manageradaptor.vo.AdaptorSettingsVO;
-import common.template.manageradaptor.vo.JobVO;
+import model.AdaptorSettingsVO;
+import model.JobVO;
 import manager.Manager;
 
 import java.rmi.Remote;

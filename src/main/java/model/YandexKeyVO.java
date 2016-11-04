@@ -1,4 +1,4 @@
-package lebedev;
+package model;
 
 import java.io.Serializable;
 
