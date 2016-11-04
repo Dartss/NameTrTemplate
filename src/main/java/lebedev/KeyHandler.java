@@ -10,15 +10,15 @@ import common.properties.template.NamesTrProperties;
 
 public class KeyHandler
 {
-    private static final int YANDEX_DAILY_LIMIT = 100;
-    private static final int YANDEX_MONTHLY_LIMIT = 1000;
     private static final int MILLISECONDS_IN_25_HOURS = 90000000;
+    private int yandexDailyLimit;
+    private int yandexMonthlyLimit;
 
     private List<YandexKeyVO> keyList;
 
     public KeyHandler() {
 
-	getKeysFromProperties();
+	loadProperties();
 	initResetTask();
     }
 
@@ -31,8 +31,8 @@ public class KeyHandler
 
 	for (YandexKeyVO currentKey : keyList)
 	{
-	    if (currentKey.getHost().equals(host) && (currentKey.getDailyUsages() + charactersAmount) < YANDEX_DAILY_LIMIT
-		    && (currentKey.getMonthlyUsages() + charactersAmount) < YANDEX_MONTHLY_LIMIT)
+	    if (currentKey.getHost().equals(host) && (currentKey.getDailyUsages() + charactersAmount) < yandexDailyLimit
+		    && (currentKey.getMonthlyUsages() + charactersAmount) < yandexMonthlyLimit)
 	    {
 		return currentKey;
 	    }
@@ -82,9 +82,12 @@ public class KeyHandler
 	return howMany;
     }
 
-    private void getKeysFromProperties()
+    private void loadProperties()
     {
 	new NamesTrProperties();
 	this.keyList = NamesTrProperties.getYandexKeys();
+	this.yandexDailyLimit = NamesTrProperties.getYandexDailyLimit();
+	this.yandexMonthlyLimit = NamesTrProperties.getYandexMonthlyLimit();
     }
+
 }

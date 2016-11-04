@@ -47,6 +47,8 @@ public class NamesTrProperties extends DefaultProperties
     private static final String managerBindingName = "manager.binding.name";
 
     private static final String yandexKeys = "yandex.key.name";
+    private static final String yandexDailyLimit = "yandex.limit.daily";
+    private static final String yandexMonthlyLimit = "yandex.limit.monthly";
 
     /* remote adaptor settings */
     private static final String ADAPTOR_HOST = "remote.adaptor.host";
@@ -174,6 +176,16 @@ public class NamesTrProperties extends DefaultProperties
 	}
 	return yandexKeysVO;
 
+    }
+
+    public static int getYandexDailyLimit()
+    {
+	return Integer.valueOf(getInstance().getString(PROPERTIES_FILE, yandexDailyLimit));
+    }
+
+    public static int getYandexMonthlyLimit()
+    {
+	return Integer.valueOf(getInstance().getString(PROPERTIES_FILE, yandexMonthlyLimit));
     }
 
 }
