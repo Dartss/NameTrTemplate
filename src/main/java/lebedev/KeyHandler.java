@@ -18,7 +18,6 @@ public class KeyHandler
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-
     private List<YandexKeyVO> keyList;
 
     public KeyHandler() {
@@ -39,7 +38,7 @@ public class KeyHandler
 	    if (currentKey.getHost().equals(host) && (currentKey.getDailyUsages() + charactersAmount) <= yandexDailyLimit
 		    && (currentKey.getMonthlyUsages() + charactersAmount) <= yandexMonthlyLimit)
 	    {
-	        LOGGER.info("Giving new key with usages count = " + currentKey.getDailyUsages());
+		LOGGER.info("Giving new key with usages " + currentKey.getKey() + " count = " + currentKey.getDailyUsages());
 		return currentKey;
 	    }
 	}
@@ -79,7 +78,14 @@ public class KeyHandler
     public void blockKey(YandexKeyVO yandexKeyVo)
     {
 	LOGGER.info("Blocking key : " + yandexKeyVo.getKey());
-	yandexKeyVo.setDailyUsages(yandexDailyLimit);
+	for (YandexKeyVO currentKey : keyList)
+	{
+	    if (currentKey.getKey().equals(yandexKeyVo.getKey()))
+	    {
+		currentKey.setDailyUsages(yandexDailyLimit);
+
+	    }
+	}
     }
 
     private long getTimeTillMidnight()
