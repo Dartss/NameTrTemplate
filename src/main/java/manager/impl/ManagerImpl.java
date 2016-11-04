@@ -60,7 +60,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	this.keyHandler = new KeyHandler();
 
 	this.queueLoader = new QueueLoader(inputQueueName, inputFilePath, NamesTrProperties.getRedisHost(), NamesTrProperties.getRedisPort());
-	new Thread(queueLoader).start();
+	this.queueLoader.pullFromFileToQueue();
 
 	// export manager to RMI
 	if (this.callType.equals(Constants.CALL_TYPE.RMI))

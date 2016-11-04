@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class QueueLoader implements Runnable
+public class QueueLoader
 {
     private QueuerPoolHandler queuerPoolHandler;
     private final String QUEUE_NAME;
@@ -27,14 +27,14 @@ public class QueueLoader implements Runnable
 
     final static Logger logger = Logger.getLogger(QueueLoader.class);
 
-    private void pullFromFileToQueue()
+    public void pullFromFileToQueue()
     {
 	try (BufferedReader in = new BufferedReader(new FileReader(FILE_PATH)))
 	{
 	    String init;
 	    while ((init = in.readLine()) != null)
 	    {
-		List<String> splittedName = Arrays.asList(init.split(" "));
+		List<String> splittedName = Arrays.asList(init.split(" +"));
 		for (String word : splittedName)
 		{
 		    this.queuerPoolHandler.sadd(QUEUE_NAME, word);
@@ -44,10 +44,5 @@ public class QueueLoader implements Runnable
 	{
 	    e1.printStackTrace();
 	}
-    }
-
-    @Override public void run()
-    {
-	pullFromFileToQueue();
     }
 }
