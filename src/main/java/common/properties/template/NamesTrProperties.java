@@ -1,11 +1,14 @@
 package common.properties.template;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import common.properties.core.DefaultProperties;
 import common.template.manageradaptor.vo.AdaptorSettingsVO;
 import common.utils.Constants;
-
-import java.util.HashSet;
-import java.util.Set;
+import lebedev.YandexKeyVO;
 
 /**
  * @author vit
@@ -16,8 +19,7 @@ public class NamesTrProperties extends DefaultProperties
     private final static String PROPERTIES_FILE = "nameTranslator.properties";
     private static final NamesTrProperties instance = new NamesTrProperties();
 
-    public NamesTrProperties()
-    {
+    public NamesTrProperties() {
 	super(PROPERTIES_FILE);
     }
 
@@ -45,6 +47,10 @@ public class NamesTrProperties extends DefaultProperties
     private static final String managerHost = "manager.host";
     private static final String managerPort = "manager.port";
     private static final String managerBindingName = "manager.binding.name";
+
+    private static final String yandexKeys = "yandex.key.name";
+    private static final String yandexDailyLimit = "yandex.limit.daily";
+    private static final String yandexMonthlyLimit = "yandex.limit.monthly";
 
     /* remote adaptor settings */
     private static final String ADAPTOR_HOST = "remote.adaptor.host";
@@ -131,13 +137,25 @@ public class NamesTrProperties extends DefaultProperties
 	return getInstance().getInt(PROPERTIES_FILE, queuePort);
     }
 
-    public static String getJdbcUrl() {return getInstance().getString(PROPERTIES_FILE, jdbcUrl); }
+    public static String getJdbcUrl()
+    {
+	return getInstance().getString(PROPERTIES_FILE, jdbcUrl);
+    }
 
-    public static String getJdbcUser() {return getInstance().getString(PROPERTIES_FILE, jdbcUser); }
+    public static String getJdbcUser()
+    {
+	return getInstance().getString(PROPERTIES_FILE, jdbcUser);
+    }
 
-    public static String getJdbcPassword() {return getInstance().getString(PROPERTIES_FILE, jdbcPassword); }
+    public static String getJdbcPassword()
+    {
+	return getInstance().getString(PROPERTIES_FILE, jdbcPassword);
+    }
 
-    public static String getJdbcDriver() {return getInstance().getString(PROPERTIES_FILE, jdbcDriver); }
+    public static String getJdbcDriver()
+    {
+	return getInstance().getString(PROPERTIES_FILE, jdbcDriver);
+    }
 
 
     public static Constants.CALL_TYPE getCallType()
@@ -153,6 +171,29 @@ public class NamesTrProperties extends DefaultProperties
 	{
 	    return null;
 	}
+    }
+
+    public static List<YandexKeyVO> getYandexKeys()
+    {
+	List<String> keyNames = getInstance().getStringArrayList(yandexKeys);
+	List<YandexKeyVO> yandexKeysVO = new ArrayList<>();
+	for (String currentKeyName : keyNames)
+	{
+	    yandexKeysVO.add(new YandexKeyVO(getInstance().getString(PROPERTIES_FILE, currentKeyName + ".host"),
+		    (getInstance().getString(PROPERTIES_FILE, currentKeyName + ".key"))));
+	}
+	return yandexKeysVO;
+
+    }
+
+    public static int getYandexDailyLimit()
+    {
+	return Integer.valueOf(getInstance().getString(PROPERTIES_FILE, yandexDailyLimit));
+    }
+
+    public static int getYandexMonthlyLimit()
+    {
+	return Integer.valueOf(getInstance().getString(PROPERTIES_FILE, yandexMonthlyLimit));
     }
 
 }

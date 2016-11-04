@@ -1,12 +1,14 @@
 package manager.impl;
 
 import common.jdbc.JdbcHandler;
+import common.properties.template.NamesTrProperties;
 import common.rmi.RmiUtils;
-import adaptor.Adaptor;
-import manager.impl.controller.AdaptorsController;
-import manager.Manager;
 import common.template.manageradaptor.vo.JobVO;
 import common.utils.Constants;
+import lebedev.KeyHandler;
+import lebedev.YandexKeyVO;
+import manager.Manager;
+import manager.impl.controller.AdaptorsController;
 import manager.impl.controller.AdaptorsControllerImpl;
 import manager.impl.controller.QueueControllerImpl;
 import common.properties.template.NamesTrProperties;
@@ -35,12 +37,13 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
     private String inputQueueName;
     private String inputFilePath;
 
+    private KeyHandler keyHandler;
+
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private final String SQL_QUEUERY = "INSERT INTO names_translation(eng_word, ara_word) VALUES";
 
-    public ManagerImpl() throws RemoteException
-    {
+    public ManagerImpl() throws RemoteException {
 	init();
     }
 
@@ -55,6 +58,8 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 			NamesTrProperties.getJdbcDriver(),
 			NamesTrProperties.getJdbcUser(),
 			NamesTrProperties.getJdbcPassword());
+
+	this.keyHandler = new KeyHandler();
 
 	this.queueLoader = new QueueLoader(inputQueueName, inputFilePath);
 	new Thread(queueLoader).start();
@@ -91,14 +96,19 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	// send job to adaptor
 	if (adaptor != null)
 	{
-	    try
+	    YandexKeyVO yandexKeyVO = keyHandler.getAvailableKey(adaptor.getSettings().getHost(), jobVO.getOriginWord().length());
+	    if (yandexKeyVO != null)
 	    {
-		adaptor.executeJob(jobVO);
-		jobAccepted = true;
-	    } catch (RemoteException e)
-	    {
-		this.queueController.requeueJob(jobVO);
-		LOGGER.severe(e.getMessage());
+		jobVO.setApiKey(yandexKeyVO);
+		try
+		{
+		    adaptor.executeJob(jobVO);
+		    jobAccepted = true;
+		} catch (RemoteException e)
+		{
+		    this.queueController.requeueJob(jobVO);
+		    LOGGER.severe(e.getMessage());
+		}
 	    }
 	} else
 	{

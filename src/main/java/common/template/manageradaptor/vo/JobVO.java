@@ -2,11 +2,13 @@ package common.template.manageradaptor.vo;
 
 import java.io.Serializable;
 
+import lebedev.YandexKeyVO;
+
 public class JobVO implements Serializable
 {
     private String originWord;
     private String translatedWord;
-    private String apiKey;
+    private YandexKeyVO yandexKeyVO;
     private boolean success;
     private int errorCode;
 
@@ -34,14 +36,14 @@ public class JobVO implements Serializable
 	this.translatedWord = translatedWord;
     }
 
-    public String getApiKey()
+    public YandexKeyVO getYandexKeyVO()
     {
-	return apiKey;
+	return yandexKeyVO;
     }
 
-    public void setApiKey(String apiKey)
+    public void setApiKey(YandexKeyVO yandexKeyVO)
     {
-	this.apiKey = apiKey;
+	this.yandexKeyVO = yandexKeyVO;
     }
 
     public boolean isSuccess()
