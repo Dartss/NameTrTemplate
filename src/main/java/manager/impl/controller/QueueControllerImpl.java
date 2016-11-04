@@ -85,7 +85,7 @@ public class QueueControllerImpl implements Runnable
 
     public void requeueJob(JobVO jobVO)
     {
-	this.queuerPoolHandler.sadd(this.inputQueueName, this.jsonHandler.serialize(jobVO));
+	this.queuerPoolHandler.sadd(this.inputQueueName, jobVO.getOriginWord());
     }
 
     /**

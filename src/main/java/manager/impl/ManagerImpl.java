@@ -100,6 +100,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 		jobVO.setApiKey(yandexKeyVO);
 		try
 		{
+		    LOGGER.info("Pushing job to adaptor : " + jobVO.getOriginWord());
 		    adaptor.executeJob(jobVO);
 		    jobAccepted = true;
 		} catch (RemoteException e)
@@ -129,6 +130,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 
 	if (success)
 	{
+	    LOGGER.info("Successful job returned with code : " + jobVO.getStatusCode());
 	    // push job to mysql
 	    try
 	    {
