@@ -97,7 +97,7 @@ public class QueueControllerImpl implements Runnable
     private JobVO pullJob(long sleepTimeMillis)
     {
 	String jobStr = null;
-
+	JobVO job = new JobVO();
 	while (jobStr == null)
 	{
 	    jobStr = this.queuerPoolHandler.spop(this.inputQueueName);
@@ -115,7 +115,9 @@ public class QueueControllerImpl implements Runnable
 	    }
 	}
 
-	return (JobVO) jsonHandler.deserialize(jobStr, new JobVO());
+	job.setOriginWord(jobStr);
+
+	return job;
     }
 
 }

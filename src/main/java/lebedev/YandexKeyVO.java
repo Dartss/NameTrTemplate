@@ -1,6 +1,8 @@
 package lebedev;
 
-public class YandexKeyVO
+import java.io.Serializable;
+
+public class YandexKeyVO implements Serializable
 {
     private final String host;
     private final String key;
