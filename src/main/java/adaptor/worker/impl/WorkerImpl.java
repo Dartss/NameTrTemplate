@@ -59,6 +59,7 @@ public class WorkerImpl implements Runnable
 	    HttpResponse response = httpRequestHandler.executePost(url, null, params);
 
 	    JSONObject sourceObject = response.getJsonBody();
+	    System.out.println(sourceObject);
 	    translated = sourceObject.getJSONArray("text").getJSONObject(0).toString();
 	    statusCode = response.getStatusCode();
 	    if (statusCode == 200) {
