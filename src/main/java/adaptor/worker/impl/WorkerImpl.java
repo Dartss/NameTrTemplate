@@ -50,7 +50,7 @@ public class WorkerImpl implements Runnable
 	int statusCode = 0;
 	try
 	{
-	    String url = yandexUrl + yandexKeyVO;
+	    String url = yandexUrl + yandexKeyVO.getKey();
 	    LOGGER.info("Worker makes call to Yandex: " + url);
 	    HttpResponse response = httpRequestHandler.executePost(url, null, params);
 
