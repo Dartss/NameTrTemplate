@@ -54,6 +54,46 @@ public class JdbcHandler
 	{
 	}
 
+    public int updateQuery(String sql) throws SQLException
+    {
+	if (!sql.isEmpty())
+	{
+	    //
+	    logQuery(sql);
+	    //
+	    Connection connection = this.jdbcPoolHandler.getConnection(this.jdbcPoolHandler);
+	    Statement statement = null;
+	    List resultList = null;
+	    int updatedCount = 0;
+
+	    try
+	    {
+		statement = connection.createStatement();
+		// statement = this.connection.prepareStatement(sql);
+		updatedCount = statement.executeUpdate(sql);
+
+	    } catch (SQLException e)
+	    {
+		LOGGER.log(Level.SEVERE, "JdbcHandler: ERROR executing Query : " + sql, e);
+		throw new SQLException();
+	    } finally
+	    {
+		if (statement != null)
+		{
+		    statement.close();
+		}
+		if (connection != null)
+		{
+		    connection.close();
+		}
+	    }
+	    return updatedCount;
+	} else
+	{
+	    return 0;
+	}
+    }
+
 	public List query(String sql) throws SQLException
 	{
 		if (!sql.isEmpty())
