@@ -157,7 +157,6 @@ public class NamesTrProperties extends DefaultProperties
 	return getInstance().getString(PROPERTIES_FILE, jdbcDriver);
     }
 
-
     public static Constants.CALL_TYPE getCallType()
     {
 	String callTypeString = getInstance().getString(PROPERTIES_FILE, callType);
@@ -179,8 +178,13 @@ public class NamesTrProperties extends DefaultProperties
 	List<YandexKeyVO> yandexKeysVO = new ArrayList<>();
 	for (String currentKeyName : keyNames)
 	{
-	    yandexKeysVO.add(new YandexKeyVO(getInstance().getString(PROPERTIES_FILE, currentKeyName + ".host"),
-		    (getInstance().getString(PROPERTIES_FILE, currentKeyName + ".key"))));
+	    String host = getInstance().getString(PROPERTIES_FILE, currentKeyName + ".host");
+	    String key = getInstance().getString(PROPERTIES_FILE, currentKeyName + ".key");
+	    if (host != null && key != null)
+	    {
+		yandexKeysVO.add(new YandexKeyVO(host, key));
+
+	    }
 	}
 	return yandexKeysVO;
 
