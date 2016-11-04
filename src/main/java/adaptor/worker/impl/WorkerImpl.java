@@ -1,12 +1,11 @@
 package adaptor.worker.impl;
 
 import adaptor.impl.AdaptorImpl;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import common.http.HttpRequestHandler;
-import common.http.HttpResponse;
+import com.squareup.okhttp.*;
 import common.template.manageradaptor.vo.JobVO;
 import lebedev.YandexKeyVO;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class WorkerImpl implements Runnable
 {
-
+    private static final MediaType REQUEST_MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded");
     private AdaptorImpl adaptor;
     private JobVO jobVO;
     private ExecutorService executorService;
@@ -30,11 +29,13 @@ public class WorkerImpl implements Runnable
     private static final String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate?lang=ar&key=";
     private YandexKeyVO yandexKeyVO;
     private JsonParser jsonParser;
+    private OkHttpClient client;
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public WorkerImpl(AdaptorImpl adaptor, JobVO jobVO)
     {
+        this.client = new OkHttpClient();
 	this.jsonParser = new JsonParser();
 	this.adaptor = adaptor;
 	this.jobVO = jobVO;
@@ -45,7 +46,6 @@ public class WorkerImpl implements Runnable
 
     @Override public void run()
     {
-	HttpRequestHandler httpRequestHandler = new HttpRequestHandler();
 	String toTranslate = jobVO.getOriginWord();
 	String translated;
 
@@ -56,12 +56,15 @@ public class WorkerImpl implements Runnable
 	{
 	    String url = yandexUrl + yandexKeyVO.getKey();
 	    LOGGER.info("Worker makes call to Yandex: " + url);
-	    HttpResponse response = httpRequestHandler.executePost(url, null, params);
+	    String translateRequest = "text=" + toTranslate;
+	    RequestBody body = RequestBody.create(REQUEST_MEDIA_TYPE_JSON, translateRequest);
+	    Request request = new Request.Builder().url(yandexUrl + yandexKeyVO.getKey()).post(body).build();
+	    Response response = client.newCall(request).execute();
 
-	    JSONObject sourceObject = response.getJsonBody();
-	    System.out.println(sourceObject);
-	    translated = sourceObject.getJSONArray("text").getJSONObject(0).toString();
-	    statusCode = response.getStatusCode();
+	    JsonObject sourceObject = jsonParser.parse(response.body().string()).getAsJsonObject();
+	    translated = sourceObject.getAsJsonArray("text").get(0).getAsString();
+
+	    statusCode = response.code();
 	    if (statusCode == 200) {
 	    	LOGGER.info("Word " + toTranslate + " translated to " + translated);
 	    	this.jobVO.setTranslatedWord(translated);
