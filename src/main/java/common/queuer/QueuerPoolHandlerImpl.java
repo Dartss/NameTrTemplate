@@ -135,7 +135,13 @@ public class QueuerPoolHandlerImpl implements QueuerPoolHandler{
 		this.jedisHelper.printInfo();
 	}
 
-	@Override
+    @Override public Long sadd(String key, String value)
+    {
+	this.jedisHelper.resetTrialsCounter();
+	return this.jedisHelper.sadd(key, value);
+    }
+
+    @Override
 	public String set(String key, String value) {
 		this.jedisHelper.resetTrialsCounter();
 		return this.jedisHelper.set(key, value);

@@ -10,10 +10,12 @@ import common.utils.Constants;
 import manager.impl.controller.AdaptorsControllerImpl;
 import manager.impl.controller.QueueControllerImpl;
 import common.properties.template.NamesTrProperties;
+import manager.impl.controller.QueueLoader;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.jar.Attributes;
 import java.util.logging.Logger;
 
 public class ManagerImpl extends UnicastRemoteObject implements Manager
@@ -28,6 +30,10 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
     private String managerBindingName;
 
     private JdbcHandler jdbcHandler;
+    private QueueLoader queueLoader;
+
+    private String inputQueueName;
+    private String inputFilePath;
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -50,6 +56,9 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 			NamesTrProperties.getJdbcUser(),
 			NamesTrProperties.getJdbcPassword());
 
+	this.queueLoader = new QueueLoader(inputQueueName, inputFilePath);
+	new Thread(queueLoader).start();
+
 	// export manager to RMI
 	if (this.callType.equals(Constants.CALL_TYPE.RMI))
 	{
@@ -69,6 +78,8 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	this.managerHost = NamesTrProperties.getManagerHost();
 	this.managerPort = NamesTrProperties.getManagerPort();
 	this.managerBindingName = NamesTrProperties.getManagerBindingName();
+	this.inputFilePath = NamesTrProperties.getInputFilePath();
+	this.inputQueueName = NamesTrProperties.getInputQueueName();
     }
 
     @Override public boolean executeJob(JobVO jobVO) throws RemoteException

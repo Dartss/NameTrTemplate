@@ -766,4 +766,27 @@ public class JedisHelper {
 	    }
 	}
     }
+
+    public Long sadd(String key, String value)
+    {
+	try{
+	    Jedis jedis = this.getResource(this);
+	    Long response = jedis.sadd(key, value);
+	    closeJedis(jedis);
+	    return response;
+	}catch(JedisConnectionException | JedisDataException | ClassCastException ex){
+	    if(trials == 10){
+		ex.printStackTrace();
+		LOGGER.info("active: "+jedisPool.getNumActive() + " - idle:" +jedisPool.getNumIdle() + " -waiters: " + jedisPool.getNumWaiters());
+		LOGGER.info("momentaryDebugCounter :" +momentaryDebugCounter);
+		LOGGER.info("time of exception: " + System.currentTimeMillis());
+		return null;
+	    }else{
+		trials++;
+		LOGGER.info(ex.getMessage());
+		closeJedis(jedis);
+		return sadd(key, value);
+	    }
+	}
+    }
 }

@@ -35,6 +35,8 @@ public class NamesTrProperties extends DefaultProperties
     private static final String queuePort = "redis.port";
     private static final String inputQueueName = "input.queue.name";
 
+    private static final String inputFilePath = "input.file.path";
+
     private static final String jdbcUrl = "jdbc.url";
     private static final String jdbcDriver = "jdbc.driver";
     private static final String jdbcUser = "jdbc.user";
@@ -114,6 +116,11 @@ public class NamesTrProperties extends DefaultProperties
 	return getInstance().getString(PROPERTIES_FILE, inputQueueName);
     }
 
+    public static String getInputFilePath()
+    {
+	return getInstance().getString(PROPERTIES_FILE, inputFilePath);
+    }
+
     public static String getRedisHost()
     {
 	return getInstance().getString(PROPERTIES_FILE, queueHost);
@@ -131,6 +138,7 @@ public class NamesTrProperties extends DefaultProperties
     public static String getJdbcPassword() {return getInstance().getString(PROPERTIES_FILE, jdbcPassword); }
 
     public static String getJdbcDriver() {return getInstance().getString(PROPERTIES_FILE, jdbcDriver); }
+
 
     public static Constants.CALL_TYPE getCallType()
     {

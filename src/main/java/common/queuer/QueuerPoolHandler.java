@@ -49,6 +49,7 @@ public interface QueuerPoolHandler {
      * @return
      */
     public Pipeline getJedisPipeline();
+    	Long sadd(final String key, final String value);
 	String spop(final String key);
 	String set(final String key, final String value);
 	String get(final String key);
