@@ -203,16 +203,4 @@ public class AdaptorImpl extends UnicastRemoteObject implements Adaptor, Seriali
     {
 	this.getSettings().setMaximumWorkersNumber(maximumWorkerThreads);
     }
-
-    public static void main(String[] args)
-    {
-	try
-	{
-	    AdaptorImpl adaptor = new AdaptorImpl();
-	} catch (RemoteException e)
-	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-    }
 }
