@@ -36,6 +36,7 @@ public class QueueLoader
     {
 	try (BufferedReader in = new BufferedReader(new FileReader(FILE_PATH)))
 	{
+	    logger.info("Trying to load from file with path : " + FILE_PATH);
 	    String init;
 	    while ((init = in.readLine()) != null)
 	    {
