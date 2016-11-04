@@ -40,7 +40,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private final String SQL_QUEUERY = "INSERT INTO names_translation(eng_word, ara_word) VALUES";
+//    private final String SQL_QUEUERY = "UPDATE names_translation(ara_word)";
 
     public ManagerImpl() throws RemoteException
     {
@@ -135,7 +135,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    try
 	    {
 	        LOGGER.info("Manager onJobExecuted origin " + jobVO.getOriginWord() + " translated " + jobVO.getTranslatedWord());
-		jdbcHandler.insert(SQL_QUEUERY + "(\"" + jobVO.getOriginWord() + "\", \"" + jobVO.getTranslatedWord() + "\");");
+		jdbcHandler.query("UPDATE names_translation SET ara_word=\"" + jobVO.getTranslatedWord() + "\" WHERE eng_word=\"" + jobVO.getOriginWord() + "\";");
 	    } catch (SQLException e)
 	    {
 		e.printStackTrace();

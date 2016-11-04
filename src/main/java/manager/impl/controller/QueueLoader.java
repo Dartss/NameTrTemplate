@@ -20,7 +20,7 @@ public class QueueLoader
     private final String QUEUE_NAME;
     private final String FILE_PATH;
     private final String QUEURY_FOR_NOT_TRANSLATED = "SELECT * FROM names_translation WHERE ara_word IS NULL;";
-    private final String SQL_QUEUERY = "UPDATE INTO names_translation(eng_word) VALUES";
+    private final String SQL_QUEUERY = "INSERT INTO names_translation(eng_word) VALUES";
     private JdbcHandler jdbcHandler;
     final static Logger logger = Logger.getLogger(QueueLoader.class);
 
