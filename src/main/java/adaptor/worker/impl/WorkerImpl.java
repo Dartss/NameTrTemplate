@@ -54,7 +54,7 @@ public class WorkerImpl implements Runnable
 	    LOGGER.info("Worker makes call to Yandex: " + url);
 	    HttpResponse response = httpRequestHandler.executePost(url, null, params);
 
-	    translated = response.getBody();
+	    translated = response.getJsonBody().getString("text");
 	    statusCode = response.getStatusCode();
 	    if (statusCode == 200) {
 	    	LOGGER.info("Word " + toTranslate + " translated to " + translated);
