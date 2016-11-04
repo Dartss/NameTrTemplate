@@ -13,9 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-
-import jsmarty.core.common.logging.DefaultLogger;
-import jsmarty.core.common.logging.core.Logger;
+import java.util.logging.Logger;
 
 /**
  * Here are the RMI methods used to bind or retrieve a remote stub
@@ -23,7 +21,7 @@ import jsmarty.core.common.logging.core.Logger;
 public class RmiUtils
 {
 
-    private final static Logger LOGGER = DefaultLogger.getInstance();
+    private final static Logger LOGGER = Logger.getLogger("RmiUtils");
 
     public static boolean isReachable(String host)
     {
@@ -33,10 +31,10 @@ public class RmiUtils
 	    return address.isReachable(3000);
 	} catch (UnknownHostException e)
 	{
-	    LOGGER.error("Error:UnknownHostException in RmiUtils.isReachable", e);
+	    LOGGER.severe("Error:UnknownHostException in RmiUtils.isReachable");
 	} catch (IOException e)
 	{
-	    LOGGER.error("Error:IOException in RmiUtils.isReachable", e);
+	    LOGGER.severe("Error:IOException in RmiUtils.isReachable");
 	}
 	return false;
     }
@@ -53,7 +51,7 @@ public class RmiUtils
 	} catch (IOException e)
 	{
 	    result = false;
-	    LOGGER.error("Error:IOException in RmiUtils.telnetConnectionTest", e);
+	    LOGGER.severe("Error:IOException in RmiUtils.telnetConnectionTest");
 	} finally
 	{
 	    if (socket != null && !socket.isClosed())
@@ -63,7 +61,7 @@ public class RmiUtils
 		    socket.close();
 		} catch (IOException e)
 		{
-		    LOGGER.error("Error:IOException in RmiUtils.telnetConnectionTest -> finally", e);
+		    LOGGER.severe("Error:IOException in RmiUtils.telnetConnectionTest -> finally");
 		}
 	    }
 	}
@@ -95,7 +93,7 @@ public class RmiUtils
 		return r;
 	    } catch (Exception e)
 	    {
-		LOGGER.error("RMI - '" + path + "' host is not reachable", e);
+		LOGGER.severe("RMI - '" + path + "' host is not reachable");
 	    }
 
 	}
@@ -105,9 +103,9 @@ public class RmiUtils
     public static Remote getRemoteObject(String host, int port, String objectName)
 	    throws MalformedURLException, RemoteException, NotBoundException, Exception
     {
-    	LOGGER.debug("inside getRemoteObject - " + host + " - " + port +" - " + objectName);
+    	LOGGER.info("inside getRemoteObject - " + host + " - " + port +" - " + objectName);
 	Registry registry = LocateRegistry.getRegistry(host, port);
-	LOGGER.debug("inside getRemoteObject - lookup");
+	LOGGER.info("inside getRemoteObject - lookup");
 	return registry.lookup(objectName);
     }
 
@@ -121,15 +119,15 @@ public class RmiUtils
 	{
 	    // special exception handler for registry creation
 	    LocateRegistry.createRegistry(port);
-	    LOGGER.debug("java RMI registry created.");
+	    LOGGER.info("java RMI registry created.");
 	} catch (RemoteException e)
 	{
-	    LOGGER.error("ERROR in RmiUtils.bindObject", e);
-	    LOGGER.debug("ERROR in RmiUtils.bindObject -> java RMI registry already exists.");
+	    LOGGER.severe("ERROR in RmiUtils.bindObject");
+	    LOGGER.info("ERROR in RmiUtils.bindObject -> java RMI registry already exists.");
 	}
 	// Bind this object instance
 	Naming.rebind(path, toBindObj);
-	LOGGER.debug("RMI - bound in registry: " + path);
+	LOGGER.info("RMI - bound in registry: " + path);
     }
 
     public static void unbind(String host, int port, String bindingName)
@@ -138,23 +136,23 @@ public class RmiUtils
 	try
 	{
 	    LocateRegistry.createRegistry(port);
-	    LOGGER.debug("java RMI registry created.");
+	    LOGGER.info("java RMI registry created.");
 	} catch (RemoteException e)
 	{
-	    LOGGER.debug("java RMI registry already exists.");
+	    LOGGER.info("java RMI registry already exists.");
 	}
 	try
 	{
 	    Naming.unbind(path);
 	} catch (RemoteException e)
 	{
-	    LOGGER.error("ERROR:RemoteException in RmiUtils.unbind", e);
+	    LOGGER.severe("ERROR:RemoteException in RmiUtils.unbind");
 	} catch (MalformedURLException e)
 	{
-	    LOGGER.error("ERROR:MalformedURLException in RmiUtils.unbind", e);
+	    LOGGER.severe("ERROR:MalformedURLException in RmiUtils.unbind");
 	} catch (NotBoundException e)
 	{
-	    LOGGER.error("ERROR:NotBoundException in RmiUtils.unbind", e);
+	    LOGGER.severe("ERROR:NotBoundException in RmiUtils.unbind");
 	}
     }
 

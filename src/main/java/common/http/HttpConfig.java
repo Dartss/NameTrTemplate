@@ -1,10 +1,10 @@
 package common.http;
 
+import common.properties.HttpClientProperties;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import jsmarty.core.common.properties.HttpClientProperties;
 
 public class HttpConfig {
 	

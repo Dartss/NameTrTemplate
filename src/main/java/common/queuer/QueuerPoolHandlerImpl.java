@@ -2,8 +2,8 @@ package common.queuer;
 
 import java.util.logging.Logger;
 
-import jsmarty.core.common.properties.GlobalProperties;
-import jsmarty.core.common.queuer.redis.JedisHelper;
+import common.properties.GlobalProperties;
+import common.queuer.redis.JedisHelper;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Pipeline;
 

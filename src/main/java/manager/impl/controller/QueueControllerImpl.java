@@ -6,7 +6,7 @@ import common.queuer.QueuerPoolHandler;
 import common.queuer.QueuerPoolHandlerImpl;
 import manager.Manager;
 import common.template.manageradaptor.vo.JobVO;
-import properties.template.NamesTrProperties;
+import common.properties.template.NamesTrProperties;
 
 import java.rmi.RemoteException;
 import java.util.logging.Logger;

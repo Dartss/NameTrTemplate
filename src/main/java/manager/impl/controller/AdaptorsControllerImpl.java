@@ -8,7 +8,7 @@ import common.template.manageradaptor.vo.JobVO;
 import common.utils.Constants;
 import common.utils.bean.BeanUtils;
 import common.utils.bean.ObjectCallProperties;
-import properties.template.NamesTrProperties;
+import common.properties.template.NamesTrProperties;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;

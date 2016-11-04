@@ -1,8 +1,8 @@
 package common.properties;
 
-import java.util.logging.Logger;
+import common.properties.core.DefaultProperties;
 
-import jsmarty.core.common.properties.core.DefaultProperties;
+import java.util.logging.Logger;
 
 public class MailProperties extends DefaultProperties
 {

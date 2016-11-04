@@ -1,10 +1,12 @@
 package common.properties;
 
+
+import common.properties.core.DefaultProperties;
+
 import java.util.logging.Logger;
 
-import jsmarty.core.common.properties.core.DefaultProperties;
-
-public class HttpClientProperties extends DefaultProperties {
+public class HttpClientProperties extends DefaultProperties
+{
 
 	private final static String PROPERTIES_FILE = "JSmarty.properties";
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

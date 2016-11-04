@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jsmarty.core.common.properties.core.DefaultProperties;
-import jsmarty.core.common.properties.core.PropertiesMap;
+import common.properties.core.DefaultProperties;
+import common.properties.core.PropertiesMap;
 
 /**
  * 

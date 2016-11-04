@@ -8,8 +8,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
-import jsmarty.core.common.rmi.RmiUtils;
-import jsmarty.core.common.utils.Constants.CALL_TYPE;
+import common.rmi.RmiUtils;
+import common.utils.Constants.CALL_TYPE;
 
 public class BeanUtils {
 

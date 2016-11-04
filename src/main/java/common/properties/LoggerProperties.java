@@ -1,8 +1,8 @@
 package common.properties;
 
-import java.util.List;
+import common.properties.core.DefaultProperties;
 
-import jsmarty.core.common.properties.core.DefaultProperties;
+import java.util.List;
 
 public class LoggerProperties extends DefaultProperties
 {

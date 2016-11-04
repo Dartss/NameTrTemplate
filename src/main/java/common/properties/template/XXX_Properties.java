@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import jsmarty.core.common.properties.core.DefaultProperties;
-import jsmarty.core.common.template.manageradaptor.vo.AdaptorSettingsVO;
-import jsmarty.core.common.utils.Constants.CALL_TYPE;
+import common.properties.core.DefaultProperties;
+import common.template.manageradaptor.vo.AdaptorSettingsVO;
+import common.utils.Constants.CALL_TYPE;
 
 /**
  * 

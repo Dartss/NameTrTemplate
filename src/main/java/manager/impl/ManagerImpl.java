@@ -9,7 +9,7 @@ import common.template.manageradaptor.vo.JobVO;
 import common.utils.Constants;
 import manager.impl.controller.AdaptorsControllerImpl;
 import manager.impl.controller.QueueControllerImpl;
-import properties.template.NamesTrProperties;
+import common.properties.template.NamesTrProperties;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
