@@ -1,5 +1,6 @@
 package manager.impl;
 
+import adaptor.Adaptor;
 import common.jdbc.JdbcHandler;
 import common.properties.template.NamesTrProperties;
 import common.rmi.RmiUtils;
@@ -11,13 +12,11 @@ import manager.Manager;
 import manager.impl.controller.AdaptorsController;
 import manager.impl.controller.AdaptorsControllerImpl;
 import manager.impl.controller.QueueControllerImpl;
-import common.properties.template.NamesTrProperties;
 import manager.impl.controller.QueueLoader;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
-import java.util.jar.Attributes;
 import java.util.logging.Logger;
 
 public class ManagerImpl extends UnicastRemoteObject implements Manager
