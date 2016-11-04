@@ -17,6 +17,7 @@ import manager.impl.controller.QueueLoader;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class ManagerImpl extends UnicastRemoteObject implements Manager
@@ -40,7 +41,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-//    private final String SQL_QUEUERY = "UPDATE names_translation(ara_word)";
+    private final String SQL_QUEUERY = "UPDATE names_translation SET ara_word=? WHERE eng_word=?;";
 
     public ManagerImpl() throws RemoteException
     {
@@ -135,7 +136,8 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    try
 	    {
 	        LOGGER.info("Manager onJobExecuted origin " + jobVO.getOriginWord() + " translated " + jobVO.getTranslatedWord());
-		jdbcHandler.updateQuery("UPDATE names_translation SET ara_word='" + jobVO.getTranslatedWord() + "' WHERE eng_word=\"" + jobVO.getOriginWord() + "\";");
+
+		jdbcHandler.insert(SQL_QUEUERY, Arrays.asList(jobVO.getTranslatedWord(), jobVO.getOriginWord()));
 	    } catch (SQLException e)
 	    {
 		e.printStackTrace();
