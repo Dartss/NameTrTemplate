@@ -1,6 +1,7 @@
 package manager.impl.controller;
 
 import common.queuer.QueuerPoolHandler;
+import common.queuer.QueuerPoolHandlerImpl;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 
@@ -17,10 +18,11 @@ public class QueueLoader implements Runnable
     private final String QUEUE_NAME;
     private final String FILE_PATH;
 
-    public QueueLoader(String QUEUE_NAME, String FILE_PATH)
+    public QueueLoader(String QUEUE_NAME, String FILE_PATH, String host, int port)
     {
 	this.QUEUE_NAME = QUEUE_NAME;
 	this.FILE_PATH = FILE_PATH;
+	this.queuerPoolHandler = new QueuerPoolHandlerImpl(host, port);
     }
 
     final static Logger logger = Logger.getLogger(QueueLoader.class);

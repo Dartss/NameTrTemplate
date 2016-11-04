@@ -10,7 +10,7 @@ public class JobVO implements Serializable
     private String translatedWord;
     private YandexKeyVO yandexKeyVO;
     private boolean success;
-    private int errorCode;
+    private int statusCode;
 
     public JobVO()
     {
@@ -56,13 +56,13 @@ public class JobVO implements Serializable
 	this.success = success;
     }
 
-    public int getErrorCode()
+    public int getStatusCode()
     {
-	return errorCode;
+	return statusCode;
     }
 
-    public void setErrorCode(int errorCode)
+    public void setStatusCode(int statusCode)
     {
-	this.errorCode = errorCode;
+	this.statusCode = statusCode;
     }
 }

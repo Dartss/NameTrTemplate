@@ -47,6 +47,7 @@ public class WorkerImpl implements Runnable
 
 	Map<String, String> params = new HashMap<>();
 	params.put("text=", toTranslate);
+	int statusCode = 0;
 	try
 	{
 	    String url = yandexUrl + yandexKeyVO;
@@ -54,20 +55,20 @@ public class WorkerImpl implements Runnable
 	    HttpResponse response = httpRequestHandler.executePost(url, null, params);
 
 	    translated = response.getBody();
-	    int statusCode = response.getStatusCode();
+	    statusCode = response.getStatusCode();
 	    if (statusCode == 200) {
 	    	LOGGER.info("Word " + toTranslate + " translated to " + translated);
 	    	this.jobVO.setTranslatedWord(translated);
 	    	this.jobVO.setSuccess(Boolean.TRUE);
 	    } else {
 	        this.jobVO.setSuccess(Boolean.FALSE);
-		this.jobVO.setErrorCode(statusCode);
 	    }
 	} catch (Exception e)
 	{
 	    this.jobVO.setSuccess(Boolean.FALSE);
 	    e.printStackTrace();
 	}
+	this.jobVO.setStatusCode(statusCode);
 	this.adaptor.returnJob(jobVO);
     }
 }	

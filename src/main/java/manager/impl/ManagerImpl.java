@@ -59,7 +59,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 
 	this.keyHandler = new KeyHandler();
 
-	this.queueLoader = new QueueLoader(inputQueueName, inputFilePath);
+	this.queueLoader = new QueueLoader(inputQueueName, inputFilePath, NamesTrProperties.getRedisHost(), NamesTrProperties.getRedisPort());
 	new Thread(queueLoader).start();
 
 	// export manager to RMI
@@ -139,6 +139,9 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    }
 	} else
 	{
+	    if (jobVO.getStatusCode() == 403 || jobVO.getStatusCode() == 404) {
+		this.keyHandler.blockKey(jobVO.getYandexKeyVO());
+	    }
 	    // requeue job
 	    this.queueController.requeueJob(jobVO);
 	}
