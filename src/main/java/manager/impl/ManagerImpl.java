@@ -133,7 +133,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    try
 	    {
 	        LOGGER.info("Manager onJobExecuted origin " + jobVO.getOriginWord() + " translated " + jobVO.getTranslatedWord());
-		jdbcHandler.insert(SQL_QUEUERY + "(" + jobVO.getOriginWord() + "," + jobVO.getTranslatedWord() + ");");
+		jdbcHandler.insert(SQL_QUEUERY + "(\"" + jobVO.getOriginWord() + "\", \"" + jobVO.getTranslatedWord() + "\");");
 	    } catch (SQLException e)
 	    {
 		e.printStackTrace();
