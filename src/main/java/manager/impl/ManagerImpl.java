@@ -42,7 +42,8 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 
     private final String SQL_QUEUERY = "INSERT INTO names_translation(eng_word, ara_word) VALUES";
 
-    public ManagerImpl() throws RemoteException {
+    public ManagerImpl() throws RemoteException
+    {
 	init();
     }
 
@@ -53,9 +54,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	this.adaptorsController = new AdaptorsControllerImpl(this, callType);
 	this.adaptorsController.connectAdaptors();
 
-	this.jdbcHandler = new JdbcHandler(NamesTrProperties.getJdbcUrl(),
-			NamesTrProperties.getJdbcDriver(),
-			NamesTrProperties.getJdbcUser(),
+	this.jdbcHandler = new JdbcHandler(NamesTrProperties.getJdbcUrl(), NamesTrProperties.getJdbcDriver(), NamesTrProperties.getJdbcUser(),
 			NamesTrProperties.getJdbcPassword());
 
 	this.keyHandler = new KeyHandler();
@@ -133,7 +132,7 @@ public class ManagerImpl extends UnicastRemoteObject implements Manager
 	    // push job to mysql
 	    try
 	    {
-		jdbcHandler.insert(SQL_QUEUERY + "(" + jobVO.getOriginWord()+ ","+ jobVO.getTranslatedWord() +");");
+		jdbcHandler.insert(SQL_QUEUERY + "(" + jobVO.getOriginWord() + "," + jobVO.getTranslatedWord() + ");");
 	    } catch (SQLException e)
 	    {
 		e.printStackTrace();

@@ -16,7 +16,8 @@ public class KeyHandler
 
     private List<YandexKeyVO> keyList;
 
-    public KeyHandler() {
+    public KeyHandler()
+    {
 
 	loadProperties();
 	initResetTask();
@@ -32,7 +33,7 @@ public class KeyHandler
 	for (YandexKeyVO currentKey : keyList)
 	{
 	    if (currentKey.getHost().equals(host) && (currentKey.getDailyUsages() + charactersAmount) < yandexDailyLimit
-		    && (currentKey.getMonthlyUsages() + charactersAmount) < yandexMonthlyLimit)
+			    && (currentKey.getMonthlyUsages() + charactersAmount) < yandexMonthlyLimit)
 	    {
 		return currentKey;
 	    }

@@ -177,5 +177,4 @@ public class AdaptorImpl extends UnicastRemoteObject implements Adaptor, Seriali
 	 */
 	@Override
 	public void notifyJobAvailable() throws RemoteException {}
-
 }

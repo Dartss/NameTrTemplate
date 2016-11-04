@@ -85,7 +85,7 @@ public class QueueControllerImpl implements Runnable
 
     public void requeueJob(JobVO jobVO)
     {
-	this.queuerPoolHandler.lpush(this.inputQueueName, this.jsonHandler.serialize(jobVO));
+	this.queuerPoolHandler.sadd(this.inputQueueName, this.jsonHandler.serialize(jobVO));
     }
 
     /**
@@ -100,7 +100,7 @@ public class QueueControllerImpl implements Runnable
 
 	while (jobStr == null)
 	{
-	    jobStr = this.queuerPoolHandler.lpop(this.inputQueueName);
+	    jobStr = this.queuerPoolHandler.spop(this.inputQueueName);
 
 	    // if we pulled null, then sleep for some time
 	    if (jobStr == null)
