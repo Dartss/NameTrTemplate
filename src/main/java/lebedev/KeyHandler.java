@@ -39,6 +39,7 @@ public class KeyHandler
 	    if (currentKey.getHost().equals(host) && (currentKey.getDailyUsages() + charactersAmount) < yandexDailyLimit
 		    && (currentKey.getMonthlyUsages() + charactersAmount) < yandexMonthlyLimit)
 	    {
+	        LOGGER.info("Giving new key with usages count = " + currentKey.getDailyUsages());
 		return currentKey;
 	    }
 	}
