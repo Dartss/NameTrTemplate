@@ -126,7 +126,9 @@ public class NamesTrProperties extends DefaultProperties
 
     public static String getInputFilePath()
     {
-	return getInstance().getString(PROPERTIES_FILE, inputFilePath);
+
+	String filePath = getInstance().getString(PROPERTIES_FILE, inputFilePath);
+	return (filePath==null)?"":filePath;
     }
 
     public static String getRedisHost()
