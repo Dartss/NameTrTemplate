@@ -33,6 +33,8 @@ public class NamesTrProperties extends DefaultProperties
 	return getInstance().loadProperties(PROPERTIES_FILE, refresh);
     }
 
+    private static final String sqlPushersThreadsCount = "sql.pushers.count";
+
     private static final String queueHost = "redis.host";
     private static final String queuePort = "redis.port";
     private static final String inputQueueName = "input.queue.name";
@@ -200,4 +202,8 @@ public class NamesTrProperties extends DefaultProperties
 	return Integer.valueOf(getInstance().getString(PROPERTIES_FILE, yandexMonthlyLimit));
     }
 
+    public static int getSqlPushersCount()
+    {
+	return Integer.valueOf(getInstance().getString(PROPERTIES_FILE, sqlPushersThreadsCount));
+    }
 }
