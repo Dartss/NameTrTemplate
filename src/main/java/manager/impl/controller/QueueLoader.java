@@ -43,7 +43,6 @@ public class QueueLoader
     {
 	try
 	{
-	    long startTime = System.currentTimeMillis();
 	    logger.info("Trying to load from file with path : " + FILE_PATH);
 
 	    pullFromFileToQueue();
@@ -55,12 +54,9 @@ public class QueueLoader
 	{
 	    try
 	    {
-	        long sqlRedisTime = System.currentTimeMillis();
 		logger.info("File not found, initializing data from MYSQL");
 
 		fillUpQueueFromMySql();
-
-		System.out.println("------sql - redis timing " + (System.currentTimeMillis()- sqlRedisTime));
 	    } catch (SQLException e1)
 	    {
 		logger.error("Error while filling up queue from MySql " + e1.getMessage());
