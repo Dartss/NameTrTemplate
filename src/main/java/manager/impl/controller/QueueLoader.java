@@ -47,7 +47,7 @@ public class QueueLoader
 
 	    pullFromFileToRedis();
 
-	    for (int i = 0; i < 50; i ++) {
+	    for (int i = 0; i < 25; i ++) {
 	        Thread pusher = new Thread(new Runnable()
 		{
 		    @Override public void run()
