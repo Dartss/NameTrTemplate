@@ -2,6 +2,7 @@ package adaptor.impl;
 
 import adaptor.worker.impl.WorkerImpl;
 import common.constants.GlobalConstants;
+import common.http.HttpRequestHandler;
 import common.rmi.RmiUtils;
 import adaptor.Adaptor;
 import manager.Manager;
@@ -37,6 +38,8 @@ public class AdaptorImpl extends UnicastRemoteObject implements Adaptor, Seriali
     private int managerPort;
     private String managerBindingName;
 
+    private HttpRequestHandler httpRequestHandler;
+
     // settings
     private Constants.CALL_TYPE callType;
     private AdaptorSettingsVO settings;
@@ -50,10 +53,11 @@ public class AdaptorImpl extends UnicastRemoteObject implements Adaptor, Seriali
     @Override
     public void init() throws RemoteException
     {
-
 	loadProperties();
 
 	initExecutor();
+
+	this.httpRequestHandler = new HttpRequestHandler();
 
 	if (this.callType.equals(Constants.CALL_TYPE.RMI))
 	{
@@ -155,7 +159,7 @@ public class AdaptorImpl extends UnicastRemoteObject implements Adaptor, Seriali
 	// this.LOGGER.info("sending JobVO to worker. Creating worker thread for
 	// job " + new JsonHandlerImpl().serialize(jobVO));
 	this.settings.incrementActualWorkersCount();
-	executorService.execute(new WorkerImpl(this, jobVO));
+	executorService.execute(new WorkerImpl(this, jobVO, this.httpRequestHandler));
 	// this.LOGGER.info("Created worker thread for this job");
     }
 

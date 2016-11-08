@@ -1,11 +1,12 @@
 package adaptor.worker.impl;
 
 import adaptor.impl.AdaptorImpl;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.squareup.okhttp.*;
+import common.http.HttpRequestHandler;
+import common.http.HttpResponse;
 import model.JobVO;
 import model.YandexKeyVO;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,20 +22,20 @@ import java.util.logging.Logger;
  */
 public class WorkerImpl implements Runnable
 {
-    private static final MediaType REQUEST_MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded");
+//    private static final MediaType REQUEST_MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded");
     private AdaptorImpl adaptor;
     private JobVO jobVO;
     private ExecutorService executorService;
     private CompletionService<JobVO> completionService;
-    private static final String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate?lang=ar&key=";
+    private static final String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate";
     private YandexKeyVO yandexKeyVO;
     private JsonParser jsonParser;
-    private OkHttpClient client;
+    private HttpRequestHandler httpRequestHandler;
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public WorkerImpl(AdaptorImpl adaptor, JobVO jobVO) {
-	this.client = new OkHttpClient();
+    public WorkerImpl(AdaptorImpl adaptor, JobVO jobVO,HttpRequestHandler requestHandler) {
+	this.httpRequestHandler = requestHandler;
 	this.jsonParser = new JsonParser();
 	this.adaptor = adaptor;
 	this.jobVO = jobVO;
@@ -51,23 +52,27 @@ public class WorkerImpl implements Runnable
 
 	Map<String, String> params = new HashMap<>();
 	params.put("text=", toTranslate);
-	int statusCode = 0;
+	int responseCode = 0;
 	try
 	{
 	    String url = yandexUrl + yandexKeyVO.getKey();
 	    LOGGER.info("Worker makes call to Yandex: " + url);
-	    String translateRequest = "text=" + toTranslate;
-	    RequestBody body = RequestBody.create(REQUEST_MEDIA_TYPE_JSON, translateRequest);
-	    Request request = new Request.Builder().url(yandexUrl + yandexKeyVO.getKey()).post(body).build();
-	    Response response = client.newCall(request).execute();
-	    
-	    JsonObject sourceObject = jsonParser.parse(response.body().string()).getAsJsonObject();
-	    statusCode = response.code();
-	    LOGGER.info("Status code is:" + statusCode);
 
-	    if (statusCode == 200)
+	    Map<String, String> parameters = new HashMap<>();
+	    parameters.put("key", yandexKeyVO.getKey());
+	    parameters.put("lang", "eng");
+	    parameters.put("lang", "ara");
+	    parameters.put("text", toTranslate);
+	    HttpResponse response = httpRequestHandler.executePost(yandexUrl, null, parameters);
+	    JSONObject jsonResponse = new JSONObject(response.getBody());
+	    responseCode = jsonResponse.getInt("code");
+
+	    LOGGER.info("Status code is:" + responseCode);
+
+	    if (responseCode == 200)
 	    {
-		translated = sourceObject.getAsJsonArray("text").get(0).getAsString();
+
+		translated = jsonResponse.get("text").toString();
 		LOGGER.info("Word " + toTranslate + " translated to " + translated);
 		this.jobVO.setTranslatedWord(translated);
 		this.jobVO.setSuccess(Boolean.TRUE);
@@ -80,7 +85,7 @@ public class WorkerImpl implements Runnable
 	    this.jobVO.setSuccess(Boolean.FALSE);
 	    e.printStackTrace();
 	}
-	this.jobVO.setStatusCode(statusCode);
+	this.jobVO.setStatusCode(responseCode);
 	this.adaptor.returnJob(jobVO);
     }
 }
